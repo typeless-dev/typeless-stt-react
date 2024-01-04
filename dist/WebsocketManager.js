@@ -49,11 +49,12 @@ class WebsocketManager {
                 },
             };
             if (this.starting) {
-                return false;
+                return "";
             }
             try {
                 this.starting = true;
                 this.mediaStream = yield navigator.mediaDevices.getUserMedia(constraints);
+                const microphoneLabel = this.mediaStream.getAudioTracks()[0].label;
                 this.audioRecorder = new RecordAudio_1.RecordAudio(this.mediaStream, (blob) => {
                     this.finalBlob = blob;
                 });
@@ -120,13 +121,13 @@ class WebsocketManager {
                 }));
                 yield this.audioRecorder.start();
                 this.starting = false;
-                return true;
+                return microphoneLabel;
             }
             catch (e) {
                 console.log(e);
                 // handle error here
                 this.starting = false;
-                return false;
+                return "";
             }
         });
     }

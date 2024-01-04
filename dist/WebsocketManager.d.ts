@@ -18,7 +18,7 @@ export declare class WebsocketManager {
     manualPunctuation: boolean;
     constructor(onResult: (data: any) => void, webSocketURL: string, language: string, callKey: string, hotwords: string[], onStop: (entireAudioBlob: Blob, callKey: string) => void, manualPunctuation: boolean);
     blobToBase64(blob: Blob): Promise<unknown>;
-    start(): Promise<boolean>;
+    start(): Promise<string>;
     stop(): Promise<"already_stopping" | "finishing" | "instant_kill">;
     closeResources(): Promise<"finishing" | "instant_kill">;
     stopAllMicrophoneInstances(): void;

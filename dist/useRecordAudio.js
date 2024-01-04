@@ -35,14 +35,14 @@ const useRecordAudio = ({ onNewResult, websocketUrl, language, hotwords, onStop,
     }, []);
     const startRecording = (callKey) => __awaiter(void 0, void 0, void 0, function* () {
         if (currentlyStopping.current || currentlyStarting.current) {
-            return false;
+            return "";
         }
         currentlyStarting.current = true;
         const websocketInstance = new WebsocketManager_1.WebsocketManager(onNewResult, websocketUrl, language, callKey, hotwords, onStop, manualPunctuation);
-        yield websocketInstance.start();
+        const microphoneLabel = yield websocketInstance.start();
         webSocketManager.current = websocketInstance;
         currentlyStarting.current = false;
-        return true;
+        return microphoneLabel;
     });
     return {
         startRecording,

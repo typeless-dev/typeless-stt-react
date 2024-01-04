@@ -43,7 +43,7 @@ export const useRecordAudio = ({
 
   const startRecording = async (callKey: string) => {
     if (currentlyStopping.current || currentlyStarting.current) {
-      return false;
+      return "";
     }
     currentlyStarting.current = true;
     const websocketInstance = new WebsocketManager(
@@ -55,10 +55,10 @@ export const useRecordAudio = ({
       onStop,
       manualPunctuation
     );
-    await websocketInstance.start();
+    const microphoneLabel = await websocketInstance.start();
     webSocketManager.current = websocketInstance;
     currentlyStarting.current = false;
-    return true;
+    return microphoneLabel;
   };
 
   return {
