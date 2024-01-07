@@ -7,7 +7,10 @@ type useRecordAudioProps = {
     manualPunctuation: boolean;
 };
 export declare const useRecordAudio: ({ onNewResult, websocketUrl, language, hotwords, onStop, manualPunctuation, }: useRecordAudioProps) => {
-    startRecording: (callKey: string) => Promise<string>;
+    startRecording: (callKey: string) => Promise<{
+        microphoneLabel: string;
+        error: string;
+    }>;
     stopRecording: () => Promise<"already_stopping" | "finishing" | "instant_kill" | "not_started">;
 };
 export {};
