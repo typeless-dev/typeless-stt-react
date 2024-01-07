@@ -21,6 +21,7 @@ export const useRecordAudio = ({
   const webSocketManager = useRef<WebsocketManager | null>(null);
   const currentlyStarting = useRef<boolean>(false);
   const currentlyStopping = useRef<boolean>(false);
+  const currentlyRecording = useRef<boolean>(false);
 
   const stopRecording = async () => {
     if (currentlyStopping.current || currentlyStarting.current) {
@@ -32,6 +33,7 @@ export const useRecordAudio = ({
       : "not_started";
     webSocketManager.current = null;
     currentlyStopping.current = false;
+    currentlyRecording.current = false;
     return res;
   };
 
@@ -42,8 +44,23 @@ export const useRecordAudio = ({
   }, []);
 
   const startRecording = async (callKey: string) => {
-    if (currentlyStopping.current || currentlyStarting.current) {
-      return "";
+    if (currentlyStopping.current) {
+      return {
+        microphoneLabel: "",
+        error: "stopping",
+      };
+    }
+    if (currentlyStarting.current) {
+      return {
+        microphoneLabel: "",
+        error: "already_starting",
+      };
+    }
+    if (currentlyRecording.current) {
+      return {
+        microphoneLabel: "",
+        error: "already_recording",
+      };
     }
     currentlyStarting.current = true;
     const websocketInstance = new WebsocketManager(
@@ -58,7 +75,11 @@ export const useRecordAudio = ({
     const microphoneLabel = await websocketInstance.start();
     webSocketManager.current = websocketInstance;
     currentlyStarting.current = false;
-    return microphoneLabel;
+    currentlyRecording.current = true;
+    return {
+      microphoneLabel: microphoneLabel,
+      error: "",
+    };
   };
 
   return {
