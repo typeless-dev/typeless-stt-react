@@ -9,6 +9,7 @@ export declare class WebsocketManager {
     webSocketURL: string;
     language: string;
     hotwords: string[];
+    hotwordsWeight?: number;
     onResult?: (data: any) => void;
     onStop: (entireAudioBlob: Blob, callKey: string) => void;
     closeTimeout?: NodeJS.Timeout;
@@ -16,7 +17,7 @@ export declare class WebsocketManager {
     starting: boolean;
     stopping: boolean;
     manualPunctuation: boolean;
-    constructor(onResult: (data: any) => void, webSocketURL: string, language: string, callKey: string, hotwords: string[], onStop: (entireAudioBlob: Blob, callKey: string) => void, manualPunctuation: boolean);
+    constructor(onResult: (data: any) => void, webSocketURL: string, language: string, callKey: string, hotwords: string[], onStop: (entireAudioBlob: Blob, callKey: string) => void, manualPunctuation: boolean, hotwordsWeight?: number);
     blobToBase64(blob: Blob): Promise<unknown>;
     start(): Promise<string>;
     stop(): Promise<"already_stopping" | "finishing" | "instant_kill">;

@@ -2,6 +2,13 @@ import { RecordAudio } from "./RecordAudio";
 
 const stopTimeoutInMs = 20000;
 
+type ConfigurationMessagePayload = {
+  language: string;
+  hotwords: string;
+  manual_punctuation: boolean;
+  hotwords_weight?: number;
+};
+
 export class WebsocketManager {
   // Attributes
   audioRecorder?: RecordAudio;
@@ -12,6 +19,7 @@ export class WebsocketManager {
   webSocketURL: string;
   language: string;
   hotwords: string[];
+  hotwordsWeight?: number;
   onResult?: (data: any) => void;
   onStop: (entireAudioBlob: Blob, callKey: string) => void;
   closeTimeout?: NodeJS.Timeout;
@@ -28,13 +36,15 @@ export class WebsocketManager {
     callKey: string,
     hotwords: string[],
     onStop: (entireAudioBlob: Blob, callKey: string) => void,
-    manualPunctuation: boolean
+    manualPunctuation: boolean,
+    hotwordsWeight?: number
   ) {
     this.onResult = onResult;
     this.webSocketURL = webSocketURL;
     this.language = language;
     this.callKey = callKey;
     this.hotwords = hotwords;
+    this.hotwordsWeight = hotwordsWeight;
     this.onStop = onStop;
     this.manualPunctuation = manualPunctuation;
   }
@@ -76,13 +86,15 @@ export class WebsocketManager {
 
       this.audioSocket.onopen = () => {
         if (this.audioSocket) {
-          this.audioSocket.send(
-            JSON.stringify({
-              language: this.language,
-              hotwords: this.hotwords.join(","),
-              manual_punctuation: this.manualPunctuation,
-            })
-          );
+          const payload: ConfigurationMessagePayload = {
+            language: this.language,
+            hotwords: this.hotwords.join(","),
+            manual_punctuation: this.manualPunctuation,
+          };
+          if (this.hotwordsWeight) {
+            payload["hotwords_weight"] = this.hotwordsWeight;
+          }
+          this.audioSocket.send(JSON.stringify(payload));
         }
       };
 

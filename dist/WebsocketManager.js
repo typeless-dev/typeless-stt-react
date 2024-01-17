@@ -14,7 +14,7 @@ const RecordAudio_1 = require("./RecordAudio");
 const stopTimeoutInMs = 20000;
 class WebsocketManager {
     // Constructor
-    constructor(onResult, webSocketURL, language, callKey, hotwords, onStop, manualPunctuation) {
+    constructor(onResult, webSocketURL, language, callKey, hotwords, onStop, manualPunctuation, hotwordsWeight) {
         this.paused = false;
         this.starting = false;
         this.stopping = false;
@@ -23,6 +23,7 @@ class WebsocketManager {
         this.language = language;
         this.callKey = callKey;
         this.hotwords = hotwords;
+        this.hotwordsWeight = hotwordsWeight;
         this.onStop = onStop;
         this.manualPunctuation = manualPunctuation;
     }
@@ -62,11 +63,15 @@ class WebsocketManager {
                 this.audioSocket.binaryType = "blob";
                 this.audioSocket.onopen = () => {
                     if (this.audioSocket) {
-                        this.audioSocket.send(JSON.stringify({
+                        const payload = {
                             language: this.language,
                             hotwords: this.hotwords.join(","),
                             manual_punctuation: this.manualPunctuation,
-                        }));
+                        };
+                        if (this.hotwordsWeight) {
+                            payload["hotwords_weight"] = this.hotwordsWeight;
+                        }
+                        this.audioSocket.send(JSON.stringify(payload));
                     }
                 };
                 this.audioSocket.onclose = (event) => {
