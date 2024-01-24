@@ -7,6 +7,7 @@ type ConfigurationMessagePayload = {
   hotwords: string;
   manual_punctuation: boolean;
   hotwords_weight?: number;
+  voice_commands?: { [key: string]: string };
 };
 
 export class WebsocketManager {
@@ -27,6 +28,7 @@ export class WebsocketManager {
   starting = false;
   stopping = false;
   manualPunctuation: boolean;
+  voiceCommands?: { [key: string]: string };
 
   // Constructor
   constructor(
@@ -37,7 +39,8 @@ export class WebsocketManager {
     hotwords: string[],
     onStop: (entireAudioBlob: Blob, callKey: string) => void,
     manualPunctuation: boolean,
-    hotwordsWeight?: number
+    hotwordsWeight?: number,
+    voiceCommands?: { [key: string]: string }
   ) {
     this.onResult = onResult;
     this.webSocketURL = webSocketURL;
@@ -47,6 +50,7 @@ export class WebsocketManager {
     this.hotwordsWeight = hotwordsWeight;
     this.onStop = onStop;
     this.manualPunctuation = manualPunctuation;
+    this.voiceCommands = voiceCommands;
   }
   blobToBase64(blob: Blob) {
     return new Promise((resolve, reject) => {
@@ -93,6 +97,9 @@ export class WebsocketManager {
           };
           if (this.hotwordsWeight) {
             payload["hotwords_weight"] = this.hotwordsWeight;
+          }
+          if (this.voiceCommands) {
+            payload["voice_commands"] = this.voiceCommands;
           }
           this.audioSocket.send(JSON.stringify(payload));
         }

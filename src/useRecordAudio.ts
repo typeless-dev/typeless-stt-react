@@ -9,6 +9,7 @@ type useRecordAudioProps = {
   hotwordsWeight?: number;
   onStop: (entireAudioBlob: Blob, callKey: string) => void;
   manualPunctuation: boolean;
+  voiceCommands?: { [key: string]: string };
 };
 
 export const useRecordAudio = ({
@@ -19,6 +20,7 @@ export const useRecordAudio = ({
   hotwordsWeight,
   onStop,
   manualPunctuation,
+  voiceCommands,
 }: useRecordAudioProps) => {
   const webSocketManager = useRef<WebsocketManager | null>(null);
   const currentlyStarting = useRef<boolean>(false);
@@ -73,7 +75,8 @@ export const useRecordAudio = ({
       hotwords,
       onStop,
       manualPunctuation,
-      hotwordsWeight
+      hotwordsWeight,
+      voiceCommands
     );
     const microphoneLabel = await websocketInstance.start();
     webSocketManager.current = websocketInstance;

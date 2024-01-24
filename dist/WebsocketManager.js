@@ -14,7 +14,7 @@ const RecordAudio_1 = require("./RecordAudio");
 const stopTimeoutInMs = 20000;
 class WebsocketManager {
     // Constructor
-    constructor(onResult, webSocketURL, language, callKey, hotwords, onStop, manualPunctuation, hotwordsWeight) {
+    constructor(onResult, webSocketURL, language, callKey, hotwords, onStop, manualPunctuation, hotwordsWeight, voiceCommands) {
         this.paused = false;
         this.starting = false;
         this.stopping = false;
@@ -26,6 +26,7 @@ class WebsocketManager {
         this.hotwordsWeight = hotwordsWeight;
         this.onStop = onStop;
         this.manualPunctuation = manualPunctuation;
+        this.voiceCommands = voiceCommands;
     }
     blobToBase64(blob) {
         return new Promise((resolve, reject) => {
@@ -70,6 +71,9 @@ class WebsocketManager {
                         };
                         if (this.hotwordsWeight) {
                             payload["hotwords_weight"] = this.hotwordsWeight;
+                        }
+                        if (this.voiceCommands) {
+                            payload["voice_commands"] = this.voiceCommands;
                         }
                         this.audioSocket.send(JSON.stringify(payload));
                     }

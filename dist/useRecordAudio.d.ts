@@ -6,8 +6,11 @@ type useRecordAudioProps = {
     hotwordsWeight?: number;
     onStop: (entireAudioBlob: Blob, callKey: string) => void;
     manualPunctuation: boolean;
+    voiceCommands?: {
+        [key: string]: string;
+    };
 };
-export declare const useRecordAudio: ({ onNewResult, websocketUrl, language, hotwords, hotwordsWeight, onStop, manualPunctuation, }: useRecordAudioProps) => {
+export declare const useRecordAudio: ({ onNewResult, websocketUrl, language, hotwords, hotwordsWeight, onStop, manualPunctuation, voiceCommands, }: useRecordAudioProps) => {
     startRecording: (callKey: string) => Promise<{
         microphoneLabel: string;
         error: string;

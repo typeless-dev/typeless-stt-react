@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useRecordAudio = void 0;
 const react_1 = require("react");
 const WebsocketManager_1 = require("./WebsocketManager");
-const useRecordAudio = ({ onNewResult, websocketUrl, language, hotwords, hotwordsWeight, onStop, manualPunctuation, }) => {
+const useRecordAudio = ({ onNewResult, websocketUrl, language, hotwords, hotwordsWeight, onStop, manualPunctuation, voiceCommands, }) => {
     const webSocketManager = (0, react_1.useRef)(null);
     const currentlyStarting = (0, react_1.useRef)(false);
     const currentlyStopping = (0, react_1.useRef)(false);
@@ -55,7 +55,7 @@ const useRecordAudio = ({ onNewResult, websocketUrl, language, hotwords, hotword
             };
         }
         currentlyStarting.current = true;
-        const websocketInstance = new WebsocketManager_1.WebsocketManager(onNewResult, websocketUrl, language, callKey, hotwords, onStop, manualPunctuation, hotwordsWeight);
+        const websocketInstance = new WebsocketManager_1.WebsocketManager(onNewResult, websocketUrl, language, callKey, hotwords, onStop, manualPunctuation, hotwordsWeight, voiceCommands);
         const microphoneLabel = yield websocketInstance.start();
         webSocketManager.current = websocketInstance;
         currentlyStarting.current = false;
