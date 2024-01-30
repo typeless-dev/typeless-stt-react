@@ -20,9 +20,10 @@ export declare class WebsocketManager {
     voiceCommands?: {
         [key: string]: string;
     };
+    domain?: string;
     constructor(onResult: (data: any) => void, webSocketURL: string, language: string, callKey: string, hotwords: string[], onStop: (entireAudioBlob: Blob, callKey: string) => void, manualPunctuation: boolean, hotwordsWeight?: number, voiceCommands?: {
         [key: string]: string;
-    });
+    }, domain?: string);
     blobToBase64(blob: Blob): Promise<unknown>;
     start(): Promise<string>;
     stop(): Promise<"already_stopping" | "finishing" | "instant_kill">;
