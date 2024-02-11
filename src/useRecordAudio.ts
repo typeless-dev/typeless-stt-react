@@ -11,6 +11,7 @@ type useRecordAudioProps = {
   manualPunctuation: boolean;
   voiceCommands?: { [key: string]: string };
   domain?: string;
+  endUserId?: string;
 };
 
 export const useRecordAudio = ({
@@ -23,6 +24,7 @@ export const useRecordAudio = ({
   manualPunctuation,
   voiceCommands,
   domain,
+  endUserId,
 }: useRecordAudioProps) => {
   const webSocketManager = useRef<WebsocketManager | null>(null);
   const currentlyStarting = useRef<boolean>(false);
@@ -79,7 +81,8 @@ export const useRecordAudio = ({
       manualPunctuation,
       hotwordsWeight,
       voiceCommands,
-      domain
+      domain,
+      endUserId
     );
     const microphoneLabel = await websocketInstance.start();
     webSocketManager.current = websocketInstance;
