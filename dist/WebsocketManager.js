@@ -81,7 +81,7 @@ class WebsocketManager {
                             payload["domain"] = this.domain;
                         }
                         if (this.endUserId) {
-                            payload["endUserId"] = this.endUserId;
+                            payload["end_user_id"] = this.endUserId;
                         }
                         this.audioSocket.send(JSON.stringify(payload));
                     }

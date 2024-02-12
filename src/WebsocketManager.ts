@@ -9,7 +9,7 @@ type ConfigurationMessagePayload = {
   hotwords_weight?: number;
   voice_commands?: { [key: string]: string };
   domain?: string;
-  endUserId?: string;
+  end_user_id?: string;
 };
 
 export class WebsocketManager {
@@ -113,7 +113,7 @@ export class WebsocketManager {
             payload["domain"] = this.domain;
           }
           if (this.endUserId) {
-            payload["endUserId"] = this.endUserId;
+            payload["end_user_id"] = this.endUserId;
           }
           this.audioSocket.send(JSON.stringify(payload));
         }
